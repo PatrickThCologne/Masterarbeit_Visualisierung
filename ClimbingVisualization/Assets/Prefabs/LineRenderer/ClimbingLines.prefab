@@ -1,0 +1,419 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6986645931137770370
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3939034631706125322}
+  - component: {fileID: 6925562901036817521}
+  - component: {fileID: 953550562883287798}
+  m_Layer: 0
+  m_Name: ClimbingLine_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3939034631706125322
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6986645931137770370}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.4402445, y: -0.060349688, z: 0.14539}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7273017600288697095}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6925562901036817521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6986645931137770370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineContainer
+  m_Spline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Splines:
+  - m_EditModeType: 1
+    m_Knots:
+    - Position:
+        x: -0.010094471
+        y: 0.00044968724
+        z: -0.010499999
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.005263402
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.00812158
+      Rotation:
+        value:
+          x: -0.62939876
+          y: -0.07317427
+          z: 0.066898115
+          w: 0.77073175
+    - Position:
+        x: -0.008994475
+        y: 0.052149687
+        z: -0.019899998
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.014328422
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.017270833
+      Rotation:
+        value:
+          x: 0.78115976
+          y: -0.038155492
+          z: 0.034829937
+          w: -0.62219006
+    - Position:
+        x: -0.010594472
+        y: 0.087949686
+        z: -0.009399999
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.017216558
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.006973298
+      Rotation:
+        value:
+          x: 0.7529547
+          y: 0.052531976
+          z: -0.06632301
+          w: -0.65261084
+    - Position:
+        x: -0.018394478
+        y: 0.10814969
+        z: -0.0711
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.011046577
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.0062875305
+      Rotation:
+        value:
+          x: 0.8120353
+          y: 0.26485905
+          z: -0.2489731
+          w: -0.45657495
+    - Position:
+        x: -0.034994476
+        y: 0.11964969
+        z: -0.06469999
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.0021184192
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.0021184192
+      Rotation:
+        value:
+          x: -0.560659
+          y: -0.18602526
+          z: 0.48481846
+          w: 0.64498615
+    m_MetaData:
+    - Mode: 3
+      Tension: 0.5
+    - Mode: 3
+      Tension: 0.5
+    - Mode: 3
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Knots:
+    m_KnotsLink: []
+--- !u!114 &953550562883287798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6986645931137770370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 463fc334fa93e2141a220db4cb99d09f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  lineWidth: 0.006
+  lineColor: {r: 1, g: 0, b: 0, a: 1}
+  crossPrefab: {fileID: 81851193633220061, guid: ec24fc8e797d2eb4aa2b786836c1df78, type: 3}
+  topCrossPrefab: {fileID: 5044349643068027124, guid: 9dd52c86f7664a94ebe58d8ee36380d8, type: 3}
+  difficultyText: 8A
+  crossOffsetToCamera: 0.01
+  maxOffsetDistance: 0.1
+--- !u!1 &8548980498490729951
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7273017600288697095}
+  m_Layer: 0
+  m_Name: ClimbingLines
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7273017600288697095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8548980498490729951}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.35425, y: 0, z: -0.18659}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2760438311974542553}
+  - {fileID: 3939034631706125322}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8651130523875625315
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2760438311974542553}
+  - component: {fileID: 9112218523232647819}
+  - component: {fileID: 4572602244289372000}
+  m_Layer: 0
+  m_Name: ClimbingLine_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2760438311974542553
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8651130523875625315}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.4402445, y: -0.060349688, z: 0.25749}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7273017600288697095}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9112218523232647819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8651130523875625315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineContainer
+  m_Spline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Splines:
+  - m_EditModeType: 1
+    m_Knots:
+    - Position:
+        x: -0.010094471
+        y: 0.00044968724
+        z: -0.010499999
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.005263402
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.00812158
+      Rotation:
+        value:
+          x: -0.62939876
+          y: -0.07317427
+          z: 0.066898115
+          w: 0.77073175
+    - Position:
+        x: -0.008974478
+        y: 0.052199688
+        z: -0.00011999905
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.014328422
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.017270833
+      Rotation:
+        value:
+          x: 0.78115976
+          y: -0.038155492
+          z: 0.034829937
+          w: -0.62219006
+    - Position:
+        x: -0.010594472
+        y: 0.10034969
+        z: -0.031600002
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.017216558
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.006973298
+      Rotation:
+        value:
+          x: 0.7529547
+          y: 0.052532
+          z: -0.06632297
+          w: -0.6526108
+    - Position:
+        x: -0.016794473
+        y: 0.11684969
+        z: -0.026
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.0066018933
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.008951442
+      Rotation:
+        value:
+          x: -0.44444588
+          y: -0.12498289
+          z: 0.2906425
+          w: 0.8380776
+    - Position:
+        x: -0.034994476
+        y: 0.12904969
+        z: 0
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.0034001179
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.0034001179
+      Rotation:
+        value:
+          x: -0.3174642
+          y: -0.12991065
+          z: 0.5240403
+          w: 0.77956486
+    m_MetaData:
+    - Mode: 3
+      Tension: 0.5
+    - Mode: 3
+      Tension: 0.5
+    - Mode: 3
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Knots:
+    m_KnotsLink: []
+--- !u!114 &4572602244289372000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8651130523875625315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 463fc334fa93e2141a220db4cb99d09f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  lineWidth: 0.006
+  lineColor: {r: 1, g: 0, b: 0, a: 1}
+  crossPrefab: {fileID: 81851193633220061, guid: ec24fc8e797d2eb4aa2b786836c1df78, type: 3}
+  topCrossPrefab: {fileID: 5044349643068027124, guid: 9dd52c86f7664a94ebe58d8ee36380d8, type: 3}
+  difficultyText: 7C
+  crossOffsetToCamera: 0.01
+  maxOffsetDistance: 0.1

@@ -1,0 +1,84 @@
+﻿#include "pch-c.h"
+
+
+#include "codegen/il2cpp-codegen-metadata.h"
+
+
+
+
+
+extern void Readme__ctor_m69C325C4C171DCB0312B646A9034AA91EA8C39C6 (void);
+extern void Section__ctor_m5F732533E4DFC0167D965E5F5DB332E46055399B (void);
+extern void VuforiaLicense_GetLicenseKey_m796D51E5EF1C53F3D62BA4EA8806AC1FB1A5E3C4 (void);
+extern void VuforiaLicense__ctor_m094B92B3323DFFD79ADB696474D5D158C95E291B (void);
+extern void RotateObjToCamera_Awake_m28E2055238C5187EAD5532BE6D12171C41B09799 (void);
+extern void RotateObjToCamera_LateUpdate_m9342677408A623BD1361A08CD1B6FFF616F4C2DD (void);
+extern void RotateObjToCamera__ctor_mBFCB704CFCD50663E82EDEF45AF399FF8607F9A1 (void);
+extern void SplineHandler_OnValidate_m17E69967BA65FEC982CB7EFEBAC5B06B84D3D5BA (void);
+extern void SplineHandler_Awake_mFC9B3DD854F04D8EC15BD6A59F797E13180E0158 (void);
+extern void SplineHandler_SetupLineRenderer_m9D4433B795470B2245E73D58E90BF67C670231A9 (void);
+extern void SplineHandler_UpdateLineFromSpline_m3AF04D01EF69CB0683E757E9CC4FB69241605827 (void);
+extern void SplineHandler_SpawnCrossesAtKnots_m97AF80686ECE03323AAA03966C5930CA3CF898B5 (void);
+extern void SplineHandler_LateUpdate_mBB1A85E0DAA8CD4C42BE21221F7DFF94211FA489 (void);
+extern void SplineHandler__ctor_mE7E57FAF72D8E310279011DE2C46E908B4BC3A5C (void);
+extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_mBEB95BEB954BB63E9710BBC7AD5E78C4CB0A0033 (void);
+extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mE70FB23ACC1EA12ABC948AA22C2E78B2D0AA39B1 (void);
+static Il2CppMethodPointer s_methodPointers[16] = 
+{
+	Readme__ctor_m69C325C4C171DCB0312B646A9034AA91EA8C39C6,
+	Section__ctor_m5F732533E4DFC0167D965E5F5DB332E46055399B,
+	VuforiaLicense_GetLicenseKey_m796D51E5EF1C53F3D62BA4EA8806AC1FB1A5E3C4,
+	VuforiaLicense__ctor_m094B92B3323DFFD79ADB696474D5D158C95E291B,
+	RotateObjToCamera_Awake_m28E2055238C5187EAD5532BE6D12171C41B09799,
+	RotateObjToCamera_LateUpdate_m9342677408A623BD1361A08CD1B6FFF616F4C2DD,
+	RotateObjToCamera__ctor_mBFCB704CFCD50663E82EDEF45AF399FF8607F9A1,
+	SplineHandler_OnValidate_m17E69967BA65FEC982CB7EFEBAC5B06B84D3D5BA,
+	SplineHandler_Awake_mFC9B3DD854F04D8EC15BD6A59F797E13180E0158,
+	SplineHandler_SetupLineRenderer_m9D4433B795470B2245E73D58E90BF67C670231A9,
+	SplineHandler_UpdateLineFromSpline_m3AF04D01EF69CB0683E757E9CC4FB69241605827,
+	SplineHandler_SpawnCrossesAtKnots_m97AF80686ECE03323AAA03966C5930CA3CF898B5,
+	SplineHandler_LateUpdate_mBB1A85E0DAA8CD4C42BE21221F7DFF94211FA489,
+	SplineHandler__ctor_mE7E57FAF72D8E310279011DE2C46E908B4BC3A5C,
+	UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_mBEB95BEB954BB63E9710BBC7AD5E78C4CB0A0033,
+	UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mE70FB23ACC1EA12ABC948AA22C2E78B2D0AA39B1,
+};
+static const int32_t s_InvokerIndices[16] = 
+{
+	16388,
+	16388,
+	27815,
+	16388,
+	16388,
+	16388,
+	16388,
+	16388,
+	16388,
+	16388,
+	16388,
+	16388,
+	16388,
+	16388,
+	27955,
+	16388,
+};
+IL2CPP_EXTERN_C const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule;
+const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule = 
+{
+	"Assembly-CSharp.dll",
+	16,
+	s_methodPointers,
+	0,
+	NULL,
+	s_InvokerIndices,
+	0,
+	NULL,
+	0,
+	NULL,
+	0,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+};

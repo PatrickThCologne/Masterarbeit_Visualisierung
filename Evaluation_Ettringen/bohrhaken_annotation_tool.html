@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Bohrhaken-Linien-Abstand Annotationstool</title>
+<style>
+  :root{
+    --bg:#f5f4f1;
+    --panel:#ffffff;
+    --border:#ddd8d0;
+    --text:#2b2a28;
+    --muted:#6b675f;
+    --accent:#b1432f;
+    --accent-soft:#e8d6d1;
+    --line:#c0392b;
+    --ok:#3f7d5c;
+    --b1:#2e7d5b;
+    --b2:#c07a1e;
+    --b3:#5d4aa8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+  }
+  header{
+    padding:18px 24px;
+    border-bottom:1px solid var(--border);
+    background:var(--panel);
+  }
+  header h1{margin:0 0 4px 0;font-size:19px;font-weight:650;letter-spacing:-0.01em;}
+  header p{margin:0;color:var(--muted);font-size:13px;}
+  .layout{display:flex;gap:16px;padding:16px;align-items:flex-start;flex-wrap:wrap;}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px;}
+  .left-col{flex:2 1 1000px;min-width:360px;}
+  .right-col{flex:1 1 380px;min-width:340px;}
+  .controls-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px;}
+  .field{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted);}
+  .field input[type=number]{width:80px;padding:5px 7px;border:1px solid var(--border);border-radius:6px;font-size:13px;}
+  .field input[type=range]{width:120px;}
+  input[type=file]{font-size:13px;}
+  button{font-family:inherit;font-size:13px;border:1px solid var(--border);background:#fbfaf8;color:var(--text);padding:7px 12px;border-radius:7px;cursor:pointer;transition:background .12s;}
+  button:hover{background:#f0eee9;}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+  button.primary:hover{background:#953626;}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+
+  .bolt-tabs{display:flex;gap:8px;margin-bottom:12px;}
+  .bolt-tab{
+    flex:1;
+    padding:9px 8px;
+    border-radius:8px;
+    border:2px solid var(--border);
+    background:#fbfaf8;
+    cursor:pointer;
+    text-align:center;
+    font-size:13px;
+    font-weight:600;
+    color:var(--muted);
+  }
+  .bolt-tab.active{color:#fff;}
+  .bolt-tab[data-bolt="1"].active{background:var(--b1);border-color:var(--b1);}
+  .bolt-tab[data-bolt="2"].active{background:var(--b2);border-color:var(--b2);}
+  .bolt-tab[data-bolt="3"].active{background:var(--b3);border-color:var(--b3);}
+  .bolt-tab .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+  .bolt-tab[data-bolt="1"] .dot{background:var(--b1);}
+  .bolt-tab[data-bolt="2"] .dot{background:var(--b2);}
+  .bolt-tab[data-bolt="3"] .dot{background:var(--b3);}
+  .bolt-tab .status{display:block;font-size:10.5px;font-weight:500;margin-top:2px;opacity:.85;}
+
+  .stage-banner{padding:9px 12px;border-radius:8px;font-size:13px;font-weight:600;margin-bottom:10px;border:1px solid transparent;}
+  .stage-calib{background:#eaf1f8;color:#3b6ea5;border-color:#cfe0ee;}
+  .stage-bolt{background:#faf1e3;color:#a5691f;border-color:#f0dcb6;}
+  .stage-manual{background:#fbe9e7;color:var(--line);border-color:#f3c7c1;}
+  .stage-done{background:#eaf4ee;color:var(--ok);border-color:#cde6d7;}
+
+  .canvas-wrap{position:relative;overflow:auto;border:1px solid var(--border);border-radius:8px;max-height:88vh;background:#111;cursor:crosshair;}
+  canvas#mainCanvas{display:block;}
+  #loupe{position:fixed;width:160px;height:160px;border:2px solid var(--accent);border-radius:50%;overflow:hidden;pointer-events:none;display:none;background:#000;z-index:50;box-shadow:0 4px 14px rgba(0,0,0,.35);}
+
+  .nav-row{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .progress{font-size:12.5px;color:var(--muted);margin-left:auto;}
+  .empty-state{padding:40px 20px;text-align:center;color:var(--muted);font-size:14px;}
+
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th,td{text-align:left;padding:6px 7px;border-bottom:1px solid var(--border);}
+  th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.02em;}
+  td.num, th.num{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;text-align:right;}
+  .del-btn{font-size:11px;padding:3px 7px;color:var(--accent);border-color:var(--accent-soft);background:#fff;}
+
+  .bolt-pill{display:inline-block;padding:1px 7px;border-radius:10px;font-size:11px;font-weight:600;color:#fff;}
+  .bolt-pill.b1{background:var(--b1);}
+  .bolt-pill.b2{background:var(--b2);}
+  .bolt-pill.b3{background:var(--b3);}
+
+  .stats-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:16px;}
+  .stats-table th{font-size:11px;}
+  .stats-table td{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;}
+
+  .section-title{font-size:13px;font-weight:650;margin:0 0 8px 0;}
+  .hint{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 10px 0;}
+  .table-wrap{max-height:260px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;margin-bottom:14px;}
+  .divider{height:1px;background:var(--border);margin:14px 0;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Bohrhaken → Linien-Abstand Annotationstool</h1>
+  <p>Bilder laden → Bohrhaken-Tab wählen → Kalibrierlänge (Lasche) markieren → Bohrhaken klicken → Linie wird automatisch erkannt. Alle 3 Bohrhaken pro Frame unabhängig auswertbar.</p>
+</header>
+
+<div class="layout">
+
+  <div class="panel left-col">
+    <div class="controls-row">
+      <div class="field">
+        <label>Frames laden (mehrere Dateien)</label>
+        <input type="file" id="fileInput" accept="image/*" multiple>
+      </div>
+      <div class="field">
+        <label>Videos laden (1 Frame/Sek. automatisch)</label>
+        <input type="file" id="videoInput" accept="video/*" multiple>
+      </div>
+      <div class="field">
+        <label>Laschenbreite real (cm)</label>
+        <input type="number" id="calibCm" value="3.7" step="0.1" min="0.5">
+      </div>
+      <div class="field">
+        <label>Suchradius Linie (px): <span id="radiusVal">150</span></label>
+        <input type="range" id="radiusRange" min="30" max="400" value="150">
+      </div>
+      <div class="field">
+        <label>Rot-Schwellenwert: <span id="threshVal">40</span></label>
+        <input type="range" id="threshRange" min="10" max="100" value="40">
+      </div>
+    </div>
+
+    <div class="bolt-tabs">
+      <div class="bolt-tab active" data-bolt="1"><span class="dot"></span>Bohrhaken 1<span class="status" id="status1">–</span></div>
+      <div class="bolt-tab" data-bolt="2"><span class="dot"></span>Bohrhaken 2<span class="status" id="status2">–</span></div>
+      <div class="bolt-tab" data-bolt="3"><span class="dot"></span>Bohrhaken 3<span class="status" id="status3">–</span></div>
+    </div>
+
+    <div id="videoStatus" class="hint" style="display:none;margin:0 0 10px 0;font-weight:600;color:var(--accent);"></div>
+
+    <div id="stageBanner" class="stage-banner stage-calib">Bitte zuerst Bilder laden.</div>
+
+    <div class="canvas-wrap" id="canvasWrap">
+      <div class="empty-state" id="emptyState">Noch keine Bilder geladen. Wähle oben deine Sample-Frames aus (z.&nbsp;B. 1 Bild pro Sekunde).</div>
+      <canvas id="mainCanvas" style="display:none;"></canvas>
+    </div>
+
+    <div class="nav-row">
+      <button id="prevBtn">← Vorheriges (←)</button>
+      <button id="nextBtn">Nächstes → (→)</button>
+      <button id="undoBtn">Schritt zurück (Z)</button>
+      <button id="resetBtn">Diesen Bohrhaken neu markieren (I)</button>
+      <button id="manualLineBtn">Linie manuell setzen (L)</button>
+      <span class="progress" id="progressLabel"></span>
+    </div>
+    <p class="hint" style="margin-top:10px;">
+      Oben den Bohrhaken-Tab wählen (1/2/3), dann pro Bohrhaken: 2 Klicks entlang seiner eigenen Lasche (Kalibrierung, farblich passend zum Tab) →
+      1 Klick auf den echten Bohrhaken → Linie wird automatisch gesucht (<span style="color:var(--line);font-weight:600;">rot</span>).
+      Jeder Bohrhaken hat seine eigene Kalibrierung, weil sie unterschiedlich weit von der Kamera entfernt sind.
+      Falls die Linien-Erkennung danebenliegt: "Linie manuell setzen" klicken und selbst anklicken.
+      <br><strong>Tastenkürzel:</strong> ← / → Frame wechseln · 1/2/3 Bohrhaken-Tab · Z Schritt zurück · I Bohrhaken neu markieren · L Linie manuell · E CSV exportieren.
+    </p>
+  </div>
+
+  <div class="panel right-col">
+    <p class="section-title">Statistik pro Bohrhaken</p>
+    <table class="stats-table">
+      <thead><tr><th></th><th class="num">n</th><th class="num">Mittelw. (cm)</th><th class="num">Median (cm)</th><th class="num">Std. (cm)</th></tr></thead>
+      <tbody id="statsBody"></tbody>
+    </table>
+
+    <p class="section-title">Ergebnisse</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Frame</th><th>Haken</th><th class="num">Abstand (cm)</th><th></th></tr></thead>
+        <tbody id="resultsBody"></tbody>
+      </table>
+    </div>
+
+    <button class="primary" id="exportBtn" style="width:100%;">CSV exportieren</button>
+
+    <div class="divider"></div>
+    <p class="hint">
+      Alle Daten bleiben nur in diesem Browser-Tab (kein Upload, keine Speicherung). Beim Neuladen der Seite gehen unexportierte Ergebnisse verloren – vorher CSV exportieren.
+    </p>
+  </div>
+
+</div>
+
+<div id="loupe"></div>
+
+<script>
+(function(){
+  const fileInput = document.getElementById('fileInput');
+  const videoInput = document.getElementById('videoInput');
+  const videoStatus = document.getElementById('videoStatus');
+  const canvas = document.getElementById('mainCanvas');
+  const ctx = canvas.getContext('2d');
+  const emptyState = document.getElementById('emptyState');
+  const stageBanner = document.getElementById('stageBanner');
+  const progressLabel = document.getElementById('progressLabel');
+  const loupe = document.getElementById('loupe');
+  const calibCmInput = document.getElementById('calibCm');
+  const radiusRange = document.getElementById('radiusRange');
+  const threshRange = document.getElementById('threshRange');
+  const radiusVal = document.getElementById('radiusVal');
+  const threshVal = document.getElementById('threshVal');
+  const resultsBody = document.getElementById('resultsBody');
+  const statsBody = document.getElementById('statsBody');
+  const boltTabs = document.querySelectorAll('.bolt-tab');
+
+  const BOLT_COLORS = {1:'#2e7d5b', 2:'#c07a1e', 3:'#5d4aa8'};
+  const BOLT_IDS = [1,2,3];
+
+  let images = [];        // {name, img, w, h}
+  // entries[imageIndex][boltId] = {calib1,calib2,bolt,line,calibPx,factor,distPx,distCm} | undefined
+  let entries = [];
+  let currentIndex = -1;
+  let currentImageData = null;
+  let currentBolt = 1;
+
+  // per-image, per-bolt working state (kept while navigating so partial work isn't lost)
+  // work[imageIndex][boltId] = {stage, temp:{calib1,calib2,bolt,line}}
+  let work = [];
+
+  radiusRange.addEventListener('input', ()=> radiusVal.textContent = radiusRange.value);
+  threshRange.addEventListener('input', ()=> threshVal.textContent = threshRange.value);
+
+  boltTabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      boltTabs.forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      currentBolt = parseInt(tab.getAttribute('data-bolt'),10);
+      redraw();
+      updateStageBanner();
+    });
+  });
+
+  function addImageFrame(name, img){
+    images.push({name:name, img:img, w:img.naturalWidth, h:img.naturalHeight});
+    entries.push({});
+    work.push(freshWork());
+    if(currentIndex === -1) loadImageAt(0);
+    updateProgressLabel();
+  }
+
+  fileInput.addEventListener('change', (e)=>{
+    const files = Array.from(e.target.files);
+    if(!files.length) return;
+    files.forEach((file)=>{
+      const reader = new FileReader();
+      reader.onload = (ev)=>{
+        const img = new Image();
+        img.onload = ()=> addImageFrame(file.name, img);
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  function seekTo(video, t){
+    return new Promise((resolve)=>{
+      function onSeeked(){
+        video.removeEventListener('seeked', onSeeked);
+        resolve();
+      }
+      video.addEventListener('seeked', onSeeked);
+      video.currentTime = t;
+    });
+  }
+
+  function extractFramesFromVideo(file){
+    return new Promise((resolve, reject)=>{
+      const video = document.createElement('video');
+      video.preload = 'auto';
+      video.muted = true;
+      video.playsInline = true;
+      const objUrl = URL.createObjectURL(file);
+      video.src = objUrl;
+
+      video.addEventListener('loadedmetadata', async ()=>{
+        try{
+          const duration = video.duration;
+          const vw = video.videoWidth, vh = video.videoHeight;
+          const tmpCanvas = document.createElement('canvas');
+          tmpCanvas.width = vw; tmpCanvas.height = vh;
+          const tmpCtx = tmpCanvas.getContext('2d');
+          const baseName = file.name.replace(/\.[^.]+$/, '');
+          const totalSeconds = Math.floor(duration) + 1;
+
+          for(let sec=0; sec<totalSeconds; sec++){
+            videoStatus.style.display = 'block';
+            videoStatus.textContent = `Extrahiere Frames aus ${file.name}: Sekunde ${sec+1}/${totalSeconds}...`;
+            const t = Math.min(sec, Math.max(0, duration - 0.05));
+            await seekTo(video, t);
+            tmpCtx.drawImage(video, 0, 0, vw, vh);
+            const dataUrl = tmpCanvas.toDataURL('image/png');
+            await new Promise((res)=>{
+              const img = new Image();
+              img.onload = ()=>{ addImageFrame(`${baseName}_sek${String(sec).padStart(3,'0')}.png`, img); res(); };
+              img.src = dataUrl;
+            });
+          }
+          URL.revokeObjectURL(objUrl);
+          resolve();
+        } catch(err){ reject(err); }
+      });
+      video.addEventListener('error', ()=> reject(new Error('Video konnte nicht geladen werden: '+file.name)));
+    });
+  }
+
+  videoInput.addEventListener('change', async (e)=>{
+    const files = Array.from(e.target.files);
+    if(!files.length) return;
+    for(const file of files){
+      await extractFramesFromVideo(file);
+    }
+    videoStatus.textContent = `Fertig – Frames aus ${files.length} Video(s) extrahiert.`;
+    setTimeout(()=>{ videoStatus.style.display='none'; }, 4000);
+  });
+
+  function freshWork(){
+    const w = {};
+    BOLT_IDS.forEach(id=>{ w[id] = {stage:'calib1', temp:{calib1:null,calib2:null,bolt:null,line:null}}; });
+    return w;
+  }
+
+  function updateProgressLabel(){
+    if(images.length===0){ progressLabel.textContent=''; return; }
+    progressLabel.textContent = `Bild ${currentIndex+1} / ${images.length}`;
+  }
+
+  function loadImageAt(idx){
+    if(idx<0 || idx>=images.length) return;
+    currentIndex = idx;
+    const rec = images[idx];
+    canvas.width = rec.w;
+    canvas.height = rec.h;
+    emptyState.style.display='none';
+    canvas.style.display='block';
+    ctx.drawImage(rec.img,0,0);
+    currentImageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+    redraw();
+    updateStageBanner();
+    updateProgressLabel();
+    updateBoltTabStatuses();
+  }
+
+  function curWork(){ return work[currentIndex][currentBolt]; }
+  function curEntry(){ return entries[currentIndex][currentBolt]; }
+
+  function updateBoltTabStatuses(){
+    BOLT_IDS.forEach(id=>{
+      const el = document.getElementById('status'+id);
+      if(currentIndex<0){ el.textContent=''; return; }
+      const e = entries[currentIndex][id];
+      el.textContent = e ? e.distCm.toFixed(2)+' cm' : 'offen';
+    });
+  }
+
+  function updateStageBanner(){
+    stageBanner.classList.remove('stage-calib','stage-bolt','stage-manual','stage-done');
+    if(images.length===0){
+      stageBanner.textContent = 'Bitte zuerst Bilder laden.';
+      stageBanner.classList.add('stage-calib');
+      return;
+    }
+    const w = curWork();
+    const stage = w.stage;
+    const label = `Bohrhaken ${currentBolt}: `;
+    if(stage==='calib1'){
+      stageBanner.textContent = label+'Schritt 1/3 – ersten Punkt am Rand der Lasche klicken (Kalibrierung).';
+      stageBanner.classList.add('stage-calib');
+    } else if(stage==='calib2'){
+      stageBanner.textContent = label+'Schritt 2/3 – zweiten Punkt am gegenüberliegenden Rand der Lasche klicken.';
+      stageBanner.classList.add('stage-calib');
+    } else if(stage==='bolt'){
+      stageBanner.textContent = label+'Schritt 3/3 – auf die echte Position des Bohrhakens klicken.';
+      stageBanner.classList.add('stage-bolt');
+    } else if(stage==='manualLine'){
+      stageBanner.textContent = label+'keine Linie automatisch gefunden – bitte Linienpunkt selbst anklicken.';
+      stageBanner.classList.add('stage-manual');
+    } else if(stage==='done'){
+      const e = curEntry();
+      stageBanner.textContent = label+(e ? `fertig – Abstand: ${e.distCm.toFixed(2)} cm.` : 'fertig.');
+      stageBanner.classList.add('stage-done');
+    }
+    updateBoltTabStatuses();
+  }
+
+  function dist(a,b){ return Math.hypot(a.x-b.x, a.y-b.y); }
+
+  function isRedPixel(r,g,b, thresh){
+    return r > 100 && (r-g) > thresh && (r-b) > thresh;
+  }
+
+  function findNearestRed(cx, cy, maxR, thresh){
+    const data = currentImageData.data;
+    const w = canvas.width, h = canvas.height;
+    cx = Math.round(cx); cy = Math.round(cy);
+    for(let r=0; r<=maxR; r++){
+      for(let dx=-r; dx<=r; dx++){
+        for(let dy=-r; dy<=r; dy++){
+          if(Math.max(Math.abs(dx),Math.abs(dy)) !== r) continue;
+          const x = cx+dx, y = cy+dy;
+          if(x<0||y<0||x>=w||y>=h) continue;
+          const idx = (y*w+x)*4;
+          if(isRedPixel(data[idx],data[idx+1],data[idx+2], thresh)){
+            return {x,y};
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  function marker(pt, color, label){
+    if(!pt) return;
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, 7, 0, Math.PI*2);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, 2, 0, Math.PI*2);
+    ctx.fillStyle = color;
+    ctx.fill();
+    if(label){
+      ctx.font = 'bold 15px sans-serif';
+      ctx.fillStyle = color;
+      ctx.fillText(label, pt.x+10, pt.y-10);
+    }
+  }
+
+  function drawBoltState(boltId, boltColor, isCurrent){
+    const w = work[currentIndex][boltId];
+    const temp = w.temp;
+    const lineW = isCurrent ? 2 : 1.4;
+    const alpha = isCurrent ? 1 : 0.55;
+    ctx.globalAlpha = alpha;
+
+    if(temp.calib1 && temp.calib2){
+      ctx.beginPath();
+      ctx.moveTo(temp.calib1.x, temp.calib1.y);
+      ctx.lineTo(temp.calib2.x, temp.calib2.y);
+      ctx.strokeStyle = boltColor;
+      ctx.lineWidth = lineW;
+      ctx.setLineDash([6,4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    marker(temp.calib1, boltColor, isCurrent ? 'K1' : null);
+    marker(temp.calib2, boltColor, isCurrent ? 'K2' : null);
+    marker(temp.bolt, boltColor, 'H'+boltId);
+    marker(temp.line, '#c0392b', isCurrent ? 'L' : null);
+
+    if(temp.bolt && temp.line){
+      ctx.beginPath();
+      ctx.moveTo(temp.bolt.x, temp.bolt.y);
+      ctx.lineTo(temp.line.x, temp.line.y);
+      ctx.strokeStyle = '#c0392b';
+      ctx.lineWidth = lineW;
+      ctx.setLineDash([4,4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function redraw(){
+    if(currentIndex<0) return;
+    const rec = images[currentIndex];
+    ctx.drawImage(rec.img,0,0);
+    // draw non-current bolts first (dimmed), then current on top (full opacity)
+    BOLT_IDS.filter(id=>id!==currentBolt).forEach(id=>{
+      drawBoltState(id, BOLT_COLORS[id], false);
+    });
+    drawBoltState(currentBolt, BOLT_COLORS[currentBolt], true);
+  }
+
+  function getCanvasCoords(evt){
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (evt.clientX - rect.left) * scaleX,
+      y: (evt.clientY - rect.top) * scaleY
+    };
+  }
+
+  function finalizeEntry(){
+    const w = curWork();
+    const temp = w.temp;
+    const calibPx = dist(temp.calib1, temp.calib2);
+    const calibCm = parseFloat(calibCmInput.value) || 3.7;
+    const factor = calibCm / calibPx;
+    const distPx = dist(temp.bolt, temp.line);
+    const distCm = distPx * factor;
+    entries[currentIndex][currentBolt] = {
+      calib1:{...temp.calib1}, calib2:{...temp.calib2},
+      bolt:{...temp.bolt}, line:{...temp.line},
+      calibPx, factor, distPx, distCm
+    };
+    w.stage = 'done';
+    redraw();
+    updateStageBanner();
+    renderResultsTable();
+    renderStats();
+  }
+
+  canvas.addEventListener('click', (evt)=>{
+    if(currentIndex<0) return;
+    const pt = getCanvasCoords(evt);
+    const w = curWork();
+
+    if(w.stage==='calib1'){
+      w.temp.calib1 = pt;
+      w.stage = 'calib2';
+    } else if(w.stage==='calib2'){
+      w.temp.calib2 = pt;
+      w.stage = 'bolt';
+    } else if(w.stage==='bolt'){
+      w.temp.bolt = pt;
+      const maxR = parseInt(radiusRange.value,10);
+      const thresh = parseInt(threshRange.value,10);
+      const found = findNearestRed(pt.x, pt.y, maxR, thresh);
+      if(found){
+        w.temp.line = found;
+        finalizeEntry();
+        return;
+      } else {
+        w.stage = 'manualLine';
+      }
+    } else if(w.stage==='manualLine'){
+      w.temp.line = pt;
+      finalizeEntry();
+      return;
+    } else if(w.stage==='done'){
+      // no-op; use buttons to redo
+    }
+    redraw();
+    updateStageBanner();
+  });
+
+  canvas.addEventListener('mousemove', (evt)=>{
+    if(currentIndex<0) return;
+    const pt = getCanvasCoords(evt);
+    const size = 24;
+    loupe.style.display = 'block';
+    loupe.style.left = (evt.clientX + 20) + 'px';
+    loupe.style.top = (evt.clientY + 20) + 'px';
+    if(!loupe._ctx){
+      const c = document.createElement('canvas');
+      c.width = 160; c.height = 160;
+      loupe.appendChild(c);
+      loupe._canvas = c;
+      loupe._ctx = c.getContext('2d');
+    }
+    const lctx = loupe._ctx;
+    lctx.imageSmoothingEnabled = false;
+    lctx.clearRect(0,0,160,160);
+    const sx = Math.max(0, Math.min(canvas.width-size, pt.x-size/2));
+    const sy = Math.max(0, Math.min(canvas.height-size, pt.y-size/2));
+    lctx.drawImage(canvas, sx, sy, size, size, 0, 0, 160, 160);
+    lctx.strokeStyle = 'rgba(177,67,47,0.9)';
+    lctx.lineWidth = 1;
+    lctx.beginPath();
+    lctx.moveTo(80,0); lctx.lineTo(80,160);
+    lctx.moveTo(0,80); lctx.lineTo(160,80);
+    lctx.stroke();
+  });
+  canvas.addEventListener('mouseleave', ()=>{ loupe.style.display='none'; });
+
+  document.getElementById('prevBtn').addEventListener('click', ()=>{
+    if(currentIndex>0) loadImageAt(currentIndex-1);
+  });
+  document.getElementById('nextBtn').addEventListener('click', ()=>{
+    if(currentIndex<images.length-1) loadImageAt(currentIndex+1);
+  });
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    delete entries[currentIndex][currentBolt];
+    work[currentIndex][currentBolt] = {stage:'calib1', temp:{calib1:null,calib2:null,bolt:null,line:null}};
+    redraw();
+    updateStageBanner();
+    renderResultsTable();
+    renderStats();
+  });
+  document.getElementById('manualLineBtn').addEventListener('click', ()=>{
+    const w = curWork();
+    if(!w.temp.bolt){
+      alert('Bitte zuerst Kalibrierung und Bohrhaken für diesen Tab setzen.');
+      return;
+    }
+    w.stage = 'manualLine';
+    updateStageBanner();
+  });
+  document.getElementById('undoBtn').addEventListener('click', ()=>{
+    const w = curWork();
+    if(w.stage==='done' || w.stage==='manualLine'){
+      w.temp.line = null;
+      w.stage = 'bolt';
+    } else if(w.stage==='bolt'){
+      w.temp.bolt = null;
+      w.temp.calib2 = null;
+      w.stage = 'calib2';
+    } else if(w.stage==='calib2'){
+      w.temp.calib2 = null;
+      w.stage = 'calib1';
+    } else if(w.stage==='calib1'){
+      w.temp.calib1 = null;
+    }
+    delete entries[currentIndex][currentBolt];
+    redraw();
+    updateStageBanner();
+    renderResultsTable();
+    renderStats();
+  });
+
+  function renderResultsTable(){
+    resultsBody.innerHTML = '';
+    entries.forEach((entryMap, i)=>{
+      BOLT_IDS.forEach(id=>{
+        const e = entryMap[id];
+        if(!e) return;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${images[i].name}</td>
+          <td><span class="bolt-pill b${id}">H${id}</span></td>
+          <td class="num">${e.distCm.toFixed(2)}</td>
+          <td><button class="del-btn" data-idx="${i}" data-bolt="${id}">löschen</button></td>
+        `;
+        resultsBody.appendChild(tr);
+      });
+    });
+    resultsBody.querySelectorAll('.del-btn').forEach(btn=>{
+      btn.addEventListener('click', (ev)=>{
+        const idx = parseInt(ev.target.getAttribute('data-idx'),10);
+        const bid = parseInt(ev.target.getAttribute('data-bolt'),10);
+        delete entries[idx][bid];
+        if(idx===currentIndex && bid===currentBolt){
+          work[idx][bid] = {stage:'calib1', temp:{calib1:null,calib2:null,bolt:null,line:null}};
+          redraw();
+          updateStageBanner();
+        }
+        renderResultsTable();
+        renderStats();
+      });
+    });
+  }
+
+  function statsFor(boltId){
+    const vals = [];
+    entries.forEach(entryMap=>{ if(entryMap[boltId]) vals.push(entryMap[boltId].distCm); });
+    if(vals.length===0) return {n:0, mean:null, median:null, std:null};
+    const mean = vals.reduce((a,b)=>a+b,0)/vals.length;
+    const sorted = [...vals].sort((a,b)=>a-b);
+    const mid = Math.floor(sorted.length/2);
+    const median = sorted.length%2!==0 ? sorted[mid] : (sorted[mid-1]+sorted[mid])/2;
+    const variance = vals.reduce((a,b)=>a+Math.pow(b-mean,2),0)/vals.length;
+    return {n:vals.length, mean, median, std:Math.sqrt(variance)};
+  }
+
+  function renderStats(){
+    statsBody.innerHTML = '';
+    BOLT_IDS.forEach(id=>{
+      const s = statsFor(id);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><span class="bolt-pill b${id}">H${id}</span></td>
+        <td class="num">${s.n}</td>
+        <td class="num">${s.mean!==null ? s.mean.toFixed(2) : '–'}</td>
+        <td class="num">${s.median!==null ? s.median.toFixed(2) : '–'}</td>
+        <td class="num">${s.std!==null ? s.std.toFixed(2) : '–'}</td>
+      `;
+      statsBody.appendChild(tr);
+    });
+    updateBoltTabStatuses();
+  }
+
+  document.getElementById('exportBtn').addEventListener('click', ()=>{
+    let csv = 'frame,bohrhaken_id,abstand_cm,abstand_px,kalibrierung_px,kalibrierung_cm_pro_px\n';
+    entries.forEach((entryMap, i)=>{
+      BOLT_IDS.forEach(id=>{
+        const e = entryMap[id];
+        if(!e) return;
+        csv += `"${images[i].name}",${id},${e.distCm.toFixed(4)},${e.distPx.toFixed(2)},${e.calibPx.toFixed(2)},${e.factor.toFixed(6)}\n`;
+      });
+    });
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'bohrhaken_linien_abstand.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  document.addEventListener('keydown', (evt)=>{
+    const tag = document.activeElement ? document.activeElement.tagName : '';
+    if(tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    if(evt.ctrlKey || evt.altKey || evt.metaKey) return;
+
+    const key = evt.key.toLowerCase();
+    if(key === 'arrowleft'){ evt.preventDefault(); document.getElementById('prevBtn').click(); }
+    else if(key === 'arrowright'){ evt.preventDefault(); document.getElementById('nextBtn').click(); }
+    else if(key === 'z'){ document.getElementById('undoBtn').click(); }
+    else if(key === 'i'){ document.getElementById('resetBtn').click(); }
+    else if(key === 'l'){ document.getElementById('manualLineBtn').click(); }
+    else if(key === 'e'){ document.getElementById('exportBtn').click(); }
+    else if(key === '1' || key === '2' || key === '3'){
+      const tab = document.querySelector(`.bolt-tab[data-bolt="${key}"]`);
+      if(tab) tab.click();
+    }
+  });
+
+  renderStats();
+  updateStageBanner();
+})();
+</script>
+
+</body>
+</html>

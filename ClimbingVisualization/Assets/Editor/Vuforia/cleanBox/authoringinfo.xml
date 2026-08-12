@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<QCARInfo>
+    <TargetSet version="36.0" toolVersion="v7.4.1">
+        <ModelTarget name="cleanBox" targetId="acf4b6fc82eb4c3eb92d6da56ee8c8eb" version="14.0" toolVersion="v7.4.1" bbox="-0.0811788 -0.0782999 -0.115728 0.0721982 0.0807096 0.122109" trackingMode="scan" upVector="0.0 1.0 0.0" optimizeTrackingFor="default" realisticTextures="yes" />
+    </TargetSet>
+    <Assembly name="cleanBox" assemblyId="df577fb66cf54dd6953f6f4ed7006807">
+        <Part name="cleanBox" translation="0 0 0" rotation="AD: 0 0 1 0" />
+        <EntryPoint name="(none)" trained="yes" />
+    </Assembly>
+</QCARInfo>

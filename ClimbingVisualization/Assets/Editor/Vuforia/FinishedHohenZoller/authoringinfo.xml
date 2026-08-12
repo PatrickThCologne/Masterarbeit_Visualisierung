@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<QCARInfo>
+    <TargetSet version="36.0" toolVersion="v7.4.1">
+        <ModelTarget name="FinishedHohenZoller" targetId="c5cb685259314ff994bbe4e8bc3fdef3" version="14.0" toolVersion="v7.4.1" bbox="-4.40867 0.0542092 -1.44993 3.82829 5.82288 0.441632" trackingMode="scan" upVector="0.0 1.0 0.0" optimizeTrackingFor="default" realisticTextures="yes" />
+    </TargetSet>
+    <Assembly name="FinishedHohenZoller" assemblyId="f1e414f4279d4993bb4a65bbd6a63da1">
+        <Part name="FinishedHohenZoller" translation="0 0 0" rotation="AD: 0 0 1 0" />
+        <EntryPoint name="(none)" trained="yes" />
+    </Assembly>
+</QCARInfo>
