@@ -2,9 +2,7 @@ using System.IO;
 using UnityEngine;
 using Vuforia;
 
-// Dieses Script an das GameObject haengen, das den ObserverBehaviour
-// (Model Target) traegt - also dasselbe Objekt, dessen transform.position
-// auch fuer die Route/den LineRenderer als Referenz dient.
+// muss auf dem Model-Target-Objekt sitzen, gleiche Position wie die Route
 [RequireComponent(typeof(ObserverBehaviour))]
 public class TrackingLogger : MonoBehaviour
 {
